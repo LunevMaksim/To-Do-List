@@ -7,12 +7,19 @@ import org.lunev.todo.util.ConnectionPool;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
 public class UserDao {
 
     public static final String SAVE_SQL = """
             INSERT INTO todo.users(surname, name, patronymic)
             VALUES (?, ?, ?);
+            """;
+
+    public static final String FIND_BY_ID = """
+            SELECT id, surname, name, patronymic
+            FROM todo.users
+            WHERE id = ?;
             """;
 
     public User save(User user){
@@ -30,6 +37,25 @@ public class UserDao {
                 }
             }
             return user;
+
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public Optional<User> findById(Long id){
+        try (var connection = ConnectionPool.get();
+            var preparedStatement = connection.prepareStatement(FIND_BY_ID)) {
+
+            preparedStatement.setLong(1, id);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                User user = null;
+                if (resultSet.next()) {
+                    user = new User(resultSet.getLong(1), resultSet.getString(2),
+                            resultSet.getString(3), resultSet.getString(4));
+                }
+                return Optional.ofNullable(user);
+            }
 
         } catch (SQLException e) {
             throw new DaoException(e);
