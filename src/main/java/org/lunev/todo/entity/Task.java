@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Task {
     private Long id;
-    private User userId;
+    private User user;
     private String name;
     private String description;
     private String category;
@@ -14,10 +14,10 @@ public class Task {
 
     public Task(){}
 
-    public Task(Long id, User userId, String name, String description,
+    public Task(Long id, User user, String name, String description,
                 String category, Status status, LocalDateTime createdAt, LocalDateTime deadline) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.name = name;
         this.description = description;
         this.category = category;
@@ -32,11 +32,11 @@ public class Task {
     public void setId(Long id) {
         this.id = id;
     }
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
     public String getName() {
         return name;
