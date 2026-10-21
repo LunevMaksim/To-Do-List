@@ -11,6 +11,10 @@ import java.util.Optional;
 
 public class UserDao {
 
+    private static final UserDao INSTANCE = new UserDao();
+
+    private UserDao() {}
+
     public static final String SAVE_SQL = """
             INSERT INTO todo.users(surname, name, patronymic)
             VALUES (?, ?, ?);

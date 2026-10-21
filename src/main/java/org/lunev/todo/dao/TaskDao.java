@@ -14,6 +14,8 @@ public class TaskDao {
 
     private static final TaskDao INSTANCE = new TaskDao();
 
+    private TaskDao() {}
+
     public static final String SAVE_SQL = """
             INSERT INTO todo.tasks(user_id, name, description, category, status, created_at, deadline)
             VALUES (?, ?, ?, ?, ?::todo.task_status, ?, ?);
