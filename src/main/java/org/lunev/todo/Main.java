@@ -1,17 +1,34 @@
 package org.lunev.todo;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import org.lunev.todo.dao.UserDao;
+import org.lunev.todo.dto.TaskCreateDto;
+import org.lunev.todo.entity.User;
+import org.lunev.todo.service.TaskService;
+
+import java.time.LocalDateTime;
+
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        try {
+            User user = new User();
+            user.setSurname("Лунёв");
+            user.setName("Максим");
+            user.setPatronymic("Михайлович");
+
+            user = UserDao.getInstance().save(user);
+
+            TaskCreateDto taskCreateDto = new TaskCreateDto(user.getId(), "Сон", "Пора лечь спать",
+                    "Домашние дела", LocalDateTime.of(2026, 10, 22, 8, 30));
+
+            Long id = TaskService.getInstance().createTask(taskCreateDto);
+
+            System.out.println("Задача успешно создана с ID: " + id);
+        } catch (Exception e) {
+            System.err.println("Произошла ошибка при выполнении программы: " + e.getMessage());
+            e.printStackTrace();
         }
+
     }
 }

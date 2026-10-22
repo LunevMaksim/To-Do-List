@@ -65,4 +65,8 @@ public class UserDao {
             throw new DaoException(e);
         }
     }
+
+    public static UserDao getInstance(){
+        return INSTANCE;
+    }
 }
