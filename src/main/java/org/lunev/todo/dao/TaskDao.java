@@ -1,5 +1,6 @@
 package org.lunev.todo.dao;
 
+import java.sql.Connection;
 import org.lunev.todo.entity.Status;
 import org.lunev.todo.entity.Task;
 import org.lunev.todo.entity.User;
@@ -27,9 +28,8 @@ public class TaskDao {
             WHERE todo.user_id = ?
             """;
 
-    public Task save(Task task){
-        try (var connection = ConnectionPool.get();
-            var preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
+    public Task save(Connection connection, Task task){
+        try (var preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)){
 
             preparedStatement.setLong(1, task.getUser().getId());
             preparedStatement.setString(2, task.getName());
